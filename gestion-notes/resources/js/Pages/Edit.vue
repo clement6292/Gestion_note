@@ -73,7 +73,7 @@ const updateNote = async () => {
   }
 
   try {
-    await Inertia.put(`/notes/${note.value.id}`, formData, {
+    await Inertia.post(`/notes/${note.value.id}`, formData, {
       onError: (errors) => {
         console.error("Erreurs de validation:", errors);
         alert("Erreur de validation : " + Object.values(errors).join(", "));
