@@ -15,9 +15,30 @@
         </button>
       </div>
 
+      <!-- Champ de recherche par titre -->
+      <div class="mb-4">
+        <input
+          v-model="searchQuery"
+          @input="filterNotes"
+          type="text"
+          placeholder="Rechercher par titre"
+          class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Sélecteur de date -->
+      <div class="mb-4">
+        <input
+          type="date"
+          v-model="filterDate"
+          @change="filterNotes"
+          class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div
-          v-for="note in notes.data"
+          v-for="note in filteredNotes"
           :key="note.id"
           class="bg-white border border-gray-200 rounded-lg shadow p-4 hover:shadow-lg transition duration-200"
         >
@@ -68,22 +89,43 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { Inertia } from "@inertiajs/inertia";
-import Toastify from 'toastify-js'; // Importer Toastify
+import Toastify from 'toastify-js';
 
 const props = defineProps(['notes']); // Récupérer les notes passées par Inertia
 
+const searchQuery = ref(''); // État pour la recherche par titre
+const filterDate = ref(''); // État pour le filtrage par date
+
+// Computed pour filtrer les notes en fonction du titre et de la date
+const filteredNotes = computed(() => {
+  return props.notes.data.filter(note => {
+    const matchesTitle = note.title.toLowerCase().includes(searchQuery.value.toLowerCase());
+    
+    // Vérifiez si une date est sélectionnée
+    if (filterDate.value) {
+      const noteDate = new Date(note.created_at).toISOString().split('T')[0]; // Format YYYY-MM-DD
+      return matchesTitle && noteDate === filterDate.value;
+    }
+    return matchesTitle;
+  });
+});
+
+const filterNotes = () => {
+  // Cette méthode peut être utilisée pour toute logique additionnelle si nécessaire
+};
+
 const editNote = (note) => {
-  Inertia.visit(`/notes/${note.id}/edit`); // Rediriger vers la page d'édition de la note
+  Inertia.visit(`/notes/${note.id}/edit`);
 };
 
 const goToCreateNote = () => {
-  Inertia.visit('/create-note'); // Rediriger vers la page de création de note
+  Inertia.visit('/create-note');
 };
 
 const goToPage = (page) => {
-  Inertia.get('/notes', { page }); // Charge la page spécifiée
+  Inertia.get('/notes', { page });
 };
 
 const deleteNote = (id) => {
@@ -94,7 +136,7 @@ const deleteNote = (id) => {
     gravity: "top",
     position: "center",
     backgroundColor: "#ff9800",
-    onClick: () => { // Action lors du clic sur la notification
+    onClick: () => {
       Inertia.delete(`/notes/${id}`, {
         onSuccess: () => {
           Toastify({

@@ -114,14 +114,9 @@ class NoteController extends Controller
 
 public function edit($id)
 {
-    // Récupérer la note par ID
     $note = Note::findOrFail($id);
-    
-    // Récupérer toutes les catégories pour le sélecteur
-    $categories = Category::all();
-
-    // Retourner la vue avec la note et les catégories
-    return Inertia::render('EditNote', [
+    $categories = Category::all(); // Assurez-vous que cela fonctionne
+    return Inertia::render('Edit', [
         'note' => $note,
         'categories' => $categories,
     ]);
