@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NoteCreated;
 use App\Models\Note;
 use App\Models\Category; // Assurez-vous d'importer le modèle Category
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -46,6 +48,12 @@ class NoteController extends Controller
             'category_id' => $validatedData['category'],
             'image_path' => $request->file('image') ? $request->file('image')->store('images', 'public') : null,
         ]);
+    
+        // Récupérer l'utilisateur connecté
+        $user = Auth::user();
+    
+        // Envoyer l'e-mail de confirmation à l'utilisateur
+        Mail::to($user->email)->send(new NoteCreated($note));
     
         // Redirection après création
         return Inertia::location('/notes');

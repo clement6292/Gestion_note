@@ -6,14 +6,21 @@
         <h1 class="text-2xl font-bold">Bienvenue dans votre application!</h1>
       </div>
 
-      <div class="mt-4 mb-6">
-        <button
-          @click="goToCreateNote"
-          class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition duration-200"
-        >
-          Créer une Note
-        </button>
-      </div>
+    <div class="mt-4 mb-6 flex space-x-8"> <!-- Utilisez 'flex' pour aligner sur la même ligne -->
+  <button
+    @click="goToDashboard"
+    class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition duration-200"
+  >
+    Accéder au Tableau de Bord
+  </button>
+
+  <button
+    @click="goToCreateNote"
+    class="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition duration-200"
+  >
+    Créer une nouvelle Note
+  </button>
+</div>
 
       <!-- Champ de recherche par titre -->
       <div class="mb-4">
@@ -126,6 +133,10 @@ const goToCreateNote = () => {
 
 const goToPage = (page) => {
   Inertia.get('/notes', { page });
+};
+
+const goToDashboard = () => {
+  Inertia.visit('/dashboard'); // Chemin vers le tableau de bord
 };
 
 const deleteNote = (id) => {

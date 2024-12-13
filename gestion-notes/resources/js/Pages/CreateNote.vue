@@ -1,62 +1,64 @@
 <template>
-<Head title="Dashboard" />
-<AuthenticatedLayout>
-  <div class="max-w-2xl mx-auto p-6">
-    <div class="bg-blue-600 text-white p-4 rounded-lg shadow-md">
-      <h1 class="text-2xl font-bold">Créer une Note</h1>
-    </div>
-    
-    <form @submit.prevent="addNote" class="mt-6 bg-white p-6 rounded-lg shadow-md">
-      <div class="space-y-4">
-        <input
-          v-model="newNote.title"
-          placeholder="Titre"
-          required
-          class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+  <Head title="Créer une Note" />
+  <AuthenticatedLayout>
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+      <div class="max-w-2xl w-full p-6 bg-white rounded-lg shadow-lg">
+        <div class="bg-blue-600 text-white p-4 rounded-lg shadow-md">
+          <h1 class="text-2xl font-bold">Créer une Note</h1>
+        </div>
         
-        <textarea
-          v-model="newNote.content"
-          placeholder="Contenu"
-          required
-          class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        ></textarea>
-        
-        <select
-          v-model="newNote.category"
-          required
-          class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="" disabled selected>Sélectionnez une catégorie</option>
-          <option v-for="category in categories" :key="category.id" :value="category.id">
-            {{ category.name }}
-          </option>
-        </select>
-        
-        <input
-          type="file"
-          @change="onFileChange"
-          class="w-full border border-gray-300 rounded-lg p-2"
-        />
-        
-        <button
-          type="submit"
-          class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200"
-        >
-          Ajouter Note
-        </button>
-      </div>
-    </form>
+        <form @submit.prevent="addNote" class="mt-6">
+          <div class="space-y-4">
+            <input
+              v-model="newNote.title"
+              placeholder="Titre"
+              required
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+            />
+            
+            <textarea
+              v-model="newNote.content"
+              placeholder="Contenu"
+              required
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+            ></textarea>
+            
+            <select
+              v-model="newNote.category"
+              required
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+            >
+              <option value="" disabled selected>Sélectionnez une catégorie</option>
+              <option v-for="category in categories" :key="category.id" :value="category.id">
+                {{ category.name }}
+              </option>
+            </select>
+            
+            <input
+              type="file"
+              @change="onFileChange"
+              class="w-full border border-gray-300 rounded-lg p-3 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            
+            <button
+              type="submit"
+              class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200"
+            >
+              Ajouter Note
+            </button>
+          </div>
+        </form>
 
-    <div class="mt-4">
-      <button
-        @click="goBack"
-        class="text-blue-500 hover:underline"
-      >
-        Retourner aux notes
-      </button>
+        <div class="mt-4 text-center">
+          <button
+            @click="goBack"
+            class="text-blue-500 hover:underline transition duration-200"
+          >
+            Retourner aux notes
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
   </AuthenticatedLayout>
 </template>
 
@@ -125,7 +127,6 @@ const goBack = () => {
 // Récupérer les catégories lors du montage du composant
 onMounted(fetchCategories);
 </script>
-
 
 <style scoped>
 /* Ajoutez vos styles spécifiques ici si nécessaire */

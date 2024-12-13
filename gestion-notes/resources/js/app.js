@@ -11,7 +11,7 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => {
-        console.log(`Resolving page: ${name}`); // Ajoutez ceci pour le débogage
+        // console.log(`Resolving page: ${name}`); // Ajoutez ceci pour le débogage
         return resolvePageComponent(
             `./Pages/${name}.vue`,
             import.meta.glob('./Pages/**/*.vue'),
