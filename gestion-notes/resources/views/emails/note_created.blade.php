@@ -18,9 +18,16 @@
             <p class="text-gray-800">{{ $note->content }}</p>
         </div>
         <p class="text-gray-700">Merci d'utiliser notre application !</p>
-        <footer class="mt-6">
-            <p class="text-sm text-gray-500">Cordialement,</p>
-            <p class="text-sm text-gray-500">L'équipe de votre application</p>
+        <footer class="bg-gray-100 text-center py-6">
+            <p class="text-gray-700 mb-2">
+                Créé avec 💻 et ❤️ par 
+                <a href="#" class="text-blue-500 font-bold hover:underline">
+                    @Clément ABK (meilleur codeur 💎🚀)
+                </a>
+            </p>
+            <p class="text-gray-500 text-sm">
+                Pour des solutions sur mesure et innovantes, faites confiance à l'excellence !
+            </p>
         </footer>
     </div>
 </body>

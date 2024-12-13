@@ -19,9 +19,11 @@ class NoteController extends Controller
     use AuthorizesRequests;
     public function index()
     {
-        // Récupérer les notes avec les catégories associées
-        $notes = Note::with('category')->where('user_id', Auth::id()) ->paginate(9);
-        
+        // Récupérer les notes avec les catégories associées, triées par date de création décroissante
+        $notes = Note::with('category')
+                     ->where('user_id', Auth::id())
+                     ->orderBy('created_at', 'desc') // Tri par date de création, les plus récentes en premier
+                     ->paginate(9);
         
         // Renvoyer le composant Notes avec les données
         return Inertia::render('Notes', [
