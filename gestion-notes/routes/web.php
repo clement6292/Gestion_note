@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/notes/{id}', [NoteController::class, 'destroy'])->name('notes.destroy');
 });
 
+
+Route::get('/categories', [NoteController::class, 'getCategories']);
 // Cette route pourrait être retirée si vous n'en avez pas besoin
 
 // Route::middleware(['auth', 'verified'])->group(function () {
