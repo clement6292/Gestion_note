@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use App\Models\Category; // Assurez-vous d'importer le modèle Category
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class NoteController extends Controller
+
 {
+    use AuthorizesRequests;
     public function index()
     {
         // Récupérer les notes avec les catégories associées
@@ -52,39 +56,77 @@ class NoteController extends Controller
     {
         $note = Note::findOrFail($id);
         $this->authorize('update', $note);
-
+    
         $request->validate([
             'title' => 'string|max:255',
             'content' => 'string',
             'category' => 'exists:categories,id', // Validation pour s'assurer que la catégorie existe
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
+        // Mettre à jour le chemin de l'image si un nouveau fichier est fourni
         if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image si nécessaire
+            if ($note->image_path) {
+                Storage::disk('public')->delete($note->image_path);
+            }
+    
             $path = $request->file('image')->store('images', 'public');
             $note->image_path = $path; // Mettre à jour le chemin de l'image
         }
-
+    
         // Mettre à jour uniquement les champs autorisés
-        $note->update($request->only(['title', 'content', 'category']));
-
+        $note->update($request->only(['title', 'content']));
+    
         // Mettre à jour la catégorie si elle est fournie
         if ($request->has('category')) {
             $note->category_id = $request->category; // Assurez-vous d'utiliser category_id
         }
-
-        return response()->json($note);
+    
+        $note->save(); // Assurez-vous de sauvegarder les changements
+    
+        return Inertia::location('/notes');
     }
 
-    // Supprimer une note
+
+    public function create()
+{
+    $categories = Category::all(); // Récupérer toutes les catégories
+    return Inertia::render('CreateNote', [
+        'categories' => $categories,
+    ]);
+}
+
+
     public function destroy($id)
-    {
-        $note = Note::findOrFail($id);
-        $this->authorize('delete', $note);
+{
+    $note = Note::findOrFail($id);
+    $this->authorize('delete', $note);
 
-        $note->delete();
-        return response()->json(null, 204);
+    // Supprimer l'image associée si elle existe
+    if ($note->image_path) {
+        Storage::disk('public')->delete($note->image_path);
     }
+
+    $note->delete();
+    return Inertia::location('/notes');
+}
+
+public function edit($id)
+{
+    // Récupérer la note par ID
+    $note = Note::findOrFail($id);
+    
+    // Récupérer toutes les catégories pour le sélecteur
+    $categories = Category::all();
+
+    // Retourner la vue avec la note et les catégories
+    return Inertia::render('EditNote', [
+        'note' => $note,
+        'categories' => $categories,
+    ]);
+}
+
 
     // Récupérer les catégories
     public function getCategories()

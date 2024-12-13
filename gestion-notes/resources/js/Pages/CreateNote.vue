@@ -1,4 +1,6 @@
 <template>
+<Head title="Dashboard" />
+<AuthenticatedLayout>
   <div class="max-w-2xl mx-auto p-6">
     <div class="bg-blue-600 text-white p-4 rounded-lg shadow-md">
       <h1 class="text-2xl font-bold">Créer une Note</h1>
@@ -55,6 +57,7 @@
       </button>
     </div>
   </div>
+  </AuthenticatedLayout>
 </template>
 
 <script setup>
@@ -75,7 +78,7 @@ const categories = ref([]);
 // Fonction pour récupérer les catégories depuis l'API
 const fetchCategories = async () => {
   try {
-    const response = await fetch('/categories');
+    const response = await fetch('/categories'); // Vérifiez que cette route fonctionne correctement
     categories.value = await response.json();
   } catch (error) {
     console.error("Erreur lors de la récupération des catégories:", error);

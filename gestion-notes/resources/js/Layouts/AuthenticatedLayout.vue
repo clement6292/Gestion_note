@@ -39,6 +39,18 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    :href="route('notes.create')"
+                                    :active="route().current('notes.create')"
+                                >
+                                   Creer une note
+                                </NavLink>
+                                <NavLink
+                                    :href="route('notes.index')"
+                                    :active="route().current('notes.index')"
+                                >
+                                    voir mes note
+                                </NavLink>
                             </div>
                         </div>
 
@@ -145,6 +157,18 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('dashboard')"
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('notes.create')"
+                            :active="route().current('notes.create')"
+                        >
+                           Creer une note
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                             :href="route('notes.index')"
+                             :active="route().current('notes.index')"
+                        >
+                            voir mes note
                         </ResponsiveNavLink>
                     </div>
 
