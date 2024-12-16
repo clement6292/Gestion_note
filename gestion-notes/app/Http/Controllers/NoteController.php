@@ -139,4 +139,51 @@ public function edit($id)
         $categories = Category::all(); // Assurez-vous d'importer le modèle Category
         return response()->json($categories);
     }
+
+
+
+    public function trash()
+{
+    $deletedNotes = Note::onlyTrashed()->get(); // Récupère les notes supprimées
+    return Inertia::render('Trash', [
+        'deletedNotes' => $deletedNotes,
+    ]);
+}
+
+public function restore($id)
+{
+    $note = Note::withTrashed()->find($id); // Récupère la note, même si elle est supprimée
+    if ($note) {
+        $note->restore(); // Restaure la note
+    }
+    
+    return redirect()->route('notes.index')->with('success', 'Note restaurée avec succès !');
+}
+
+public function dashboard()
+{
+    $user = auth()->user();
+    
+    // Vérifiez si l'utilisateur est authentifié
+    if (!$user) {
+        return redirect()->route('login'); // Redirection si non authentifié
+    }
+
+    // Récupérer le total des notes
+    $totalNotes = $user->notes()->count();
+    
+    // Debug pour vérifier la valeur
+    // dd($totalNotes); // Vérifiez cette ligne pour voir le nombre de notes
+
+    return Inertia::render('Dashboard', [
+        'totalNotes' => $totalNotes,
+        // Autres données à passer si nécessaire
+    ]);
+}
+
+public function getTrashedNotesCount()
+{
+    return auth()->user()->notes()->onlyTrashed()->count();
+}
+
 }

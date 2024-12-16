@@ -3,7 +3,7 @@
   <AuthenticatedLayout>
     <div class="max-w-4xl mx-auto p-6">
       <div class="bg-blue-600 text-white p-4 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold">Bienvenue dans votre application!</h1>
+        <h1 class="text-2xl font-bold text-center">🚀 Bienvenue dans votre application!</h1>
       </div>
 
       <div class="mt-4 mb-6 flex space-x-8">
@@ -29,7 +29,20 @@
           </svg>
           <span>Créer une nouvelle Note</span>
         </button>
+
+          <!-- Lien vers la corbeille -->
+        <button
+          @click="goToTrash"
+          class="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition duration-200"
+        >
+        🗑️ Acceder au Corbeille
+        </button>
+
+
+
       </div>
+        
+      
 
       <!-- Champ de recherche par titre -->
       <div class="mb-4 relative">
@@ -83,13 +96,13 @@
             alt="Image de la note"
             class="mt-2 w-full h-auto rounded-md"
           />
-          <h2 class="text-xl font-semibold text-gray-800">{{ note.title }}</h2>
+          <h2 class="text-xl font-semibold text-center text-gray-800">{{ note.title }}</h2>
           <p class="text-gray-600">{{ note.content }}</p>
           <p class="text-sm text-gray-500">
-            <strong>Catégorie:</strong> {{ note.category.name }}
+            <strong class="text-lime-500 font-">Catégorie: </strong> {{ note.category.name }}
           </p>
           <p class="text-xs text-gray-400">
-            <strong>Date de création:</strong>
+            <strong class="text-lime-500 font-">Date de création:</strong>
             {{ new Date(note.created_at).toLocaleDateString() }}
           </p>
 
@@ -218,6 +231,10 @@ const goToPage = (page) => {
 
 const goToDashboard = () => {
   Inertia.visit("/dashboard");
+};
+
+const goToTrash = () => { // Ajouter la fonction pour accéder à la corbeille
+  Inertia.visit("/notes/trash");
 };
 
 const confirmDelete = (id) => {

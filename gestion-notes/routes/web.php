@@ -15,9 +15,10 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route pour le tableau de bord, maintenant avec le contrôleur
+Route::get('/dashboard', [NoteController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -32,17 +33,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/notes/{id}', [NoteController::class, 'update'])->name('notes.update');
     Route::get('/create-note', [NoteController::class, 'create'])->name('create-note');
     Route::delete('/notes/{id}', [NoteController::class, 'destroy'])->name('notes.destroy');
-});
+    
+    // Route pour afficher la corbeille
+    Route::get('/notes/trash', [NoteController::class, 'trash'])->name('notes.trash');
+
+    // Route pour restaurer une note
+    Route::post('/notes/{id}/restore', [NoteController::class, 'restore'])->name('notes.restore');
+});  
 
 
 Route::get('/categories', [NoteController::class, 'getCategories']);
-// Cette route pourrait être retirée si vous n'en avez pas besoin
 
-// Route::middleware(['auth', 'verified'])->group(function () {
-//     Route::get('/create-note', function () {
-//         return Inertia::render('CreateNote');
-//     })->name('notes.create'); // Retirer cette route si la précédente est gardée
-// });
 
 
 
