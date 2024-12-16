@@ -23,7 +23,7 @@ class NoteController extends Controller
         $notes = Note::with('category')
                      ->where('user_id', Auth::id())
                      ->orderBy('created_at', 'desc') // Tri par date de création, les plus récentes en premier
-                     ->paginate(9);
+                     ->paginate(6);
         
         // Renvoyer le composant Notes avec les données
         return Inertia::render('Notes', [
