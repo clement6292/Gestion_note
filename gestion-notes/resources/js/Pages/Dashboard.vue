@@ -2,7 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 
-const props = defineProps(['totalNotes']);
+const props = defineProps(['totalNotes', 'trashedNotesCount']);
 </script>
 
 <template>
@@ -28,19 +28,13 @@ const props = defineProps(['totalNotes']);
                     </div>
 
                     <!-- Carte 2: Notes Épinglées -->
-                    <div class="overflow-hidden bg-white shadow-lg rounded-lg">
-                        <div class="p-6">
-                            <h3 class="text-lg font-bold text-gray-700">Notes Épinglées</h3>
-                            <p class="text-3xl font-semibold text-green-600">12</p>
-                            <p class="text-gray-500">Accédez rapidement à vos notes importantes</p>
-                        </div>
-                    </div>
+                  
 
                     <!-- Carte 3: Notes dans la Corbeille -->
                     <div class="overflow-hidden bg-white shadow-lg rounded-lg">
                         <div class="p-6">
                             <h3 class="text-lg font-bold text-gray-700">Notes dans la Corbeille</h3>
-                            <p class="text-3xl font-semibold text-red-600">5</p>
+                            <p class="text-3xl font-semibold text-red-600">{{ trashedNotesCount }}</p>
                             <p class="text-gray-500">Notes supprimées récemment</p>
                         </div>
                     </div>

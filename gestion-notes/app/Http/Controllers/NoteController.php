@@ -143,12 +143,13 @@ public function edit($id)
 
 
     public function trash()
-{
-    $deletedNotes = Note::onlyTrashed()->get(); // Récupère les notes supprimées
-    return Inertia::render('Trash', [
-        'deletedNotes' => $deletedNotes,
-    ]);
-}
+    {
+        $deletedNotes = auth()->user()->notes()->onlyTrashed()->get();
+    
+        return Inertia::render('Trash', [
+            'deletedNotes' => $deletedNotes,
+        ]);
+    }
 
 public function restore($id)
 {
@@ -171,13 +172,14 @@ public function dashboard()
 
     // Récupérer le total des notes
     $totalNotes = $user->notes()->count();
-    
+    $trashedNotesCount = $user->notes()->onlyTrashed()->count(); // Compter les notes dans la corbeille
     // Debug pour vérifier la valeur
     // dd($totalNotes); // Vérifiez cette ligne pour voir le nombre de notes
 
     return Inertia::render('Dashboard', [
         'totalNotes' => $totalNotes,
-        // Autres données à passer si nécessaire
+        'trashedNotesCount' => $trashedNotesCount, // Passer le nombre de notes dans la corbeille
+       
     ]);
 }
 
@@ -186,4 +188,18 @@ public function getTrashedNotesCount()
     return auth()->user()->notes()->onlyTrashed()->count();
 }
 
+
+public function forceDelete($id)
+{
+    $note = Note::onlyTrashed()->findOrFail($id); // Récupérer la note dans la corbeille
+    $this->authorize('delete', $note); // Vérifier les autorisations
+
+    // Supprimer l'image associée si elle existe
+    if ($note->image_path) {
+        Storage::disk('public')->delete($note->image_path);
+    }
+
+    $note->forceDelete(); // Suppression définitive
+    return redirect()->route('notes.trash')->with('success', 'Note supprimée définitivement.');
+}
 }

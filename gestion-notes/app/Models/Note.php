@@ -22,4 +22,9 @@ class Note extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getImageUrlAttribute()
+{
+    return $this->image_path ? asset($this->image_path) : null;
+}
 }

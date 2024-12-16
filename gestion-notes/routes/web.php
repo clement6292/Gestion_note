@@ -39,6 +39,9 @@ Route::middleware('auth')->group(function () {
 
     // Route pour restaurer une note
     Route::post('/notes/{id}/restore', [NoteController::class, 'restore'])->name('notes.restore');
+    
+    //Route de suppression definitive de la corbeille 
+    Route::delete('/notes/{id}/force-delete', [NoteController::class, 'forceDelete'])->name('notes.forceDelete');
 });  
 
 
